@@ -251,21 +251,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front-end
+  name: front-end-loadbalancer
   namespace: sock-shop
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: front-end
+      name: front-end-loadbalancer
   template:
     metadata:
       labels:
-        name: front-end
+        name: front-end-loadbalancer
     spec:
       containers:
-      - name: front-end
-        image: weaveworksdemos/front-end:0.3.12
+      - name: front-end-loadbalancer
+        image: weaveworksdemos/front-end-loadbalancer:0.3.12
         resources:
           limits:
             cpu: 300m
@@ -303,11 +303,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: front-end
+  name: front-end-loadbalancer
   annotations:
         prometheus.io/scrape: 'true'
   labels:
-    name: front-end
+    name: front-end-loadbalancer
   namespace: sock-shop
 spec:
   type: LoadBalancer
@@ -315,7 +315,7 @@ spec:
   - port: 80
     targetPort: 8079
   selector:
-    name: front-end
+    name: front-end-loadbalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
